@@ -6,25 +6,11 @@
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
 
-        # Catch null lists
-        match (list1, list2):
-            case (None, None):
-                return list1
-            case (None, _):
-                return list2
-            case (_, None):
-                return list1
-        
-        # Initialize head of combined list
-        if list1.val < list2.val:
-            head = list1
-            list1 = list1.next
-        else:
-            head = list2
-            list2 = list2.next
+        # Initialize head node
+        head = ListNode()
+        prev = head
 
         # Compare and relink to form a new list
-        prev = head
         while list1 is not None or list2 is not None:
             match (list1, list2):
                 case (None, _):
@@ -47,4 +33,5 @@ class Solution:
                 prev = list2
                 list2 = list2.next
         
-        return head
+        # Return list, skipping dummy head
+        return head.next

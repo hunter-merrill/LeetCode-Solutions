@@ -5,7 +5,7 @@ class Solution(object):
         d = deque()
         d.append('start')
         
-        # Dictionaries to check if brackets match
+        # Dictionaries to check whether brackets match
         openPar = {
             '(': ')', 
             '[': ']', 

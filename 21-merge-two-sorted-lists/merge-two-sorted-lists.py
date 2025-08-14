@@ -21,7 +21,7 @@ class Solution:
                 prev = list2
                 list2 = list2.next
         
-        prev.next = list1 or list2 # Migrate null check to the end!! new syntax I learned :o
+        prev.next = list1 or list2 # Migrate null check to the end!!! new syntax I learned :o
         
         # Return list, skipping dummy head
         return head.next

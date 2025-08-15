@@ -3,7 +3,7 @@ from collections import deque
 class Solution:
     def isPalindrome(self, s: str) -> bool:
         # Hash map for alphanumerics that converts caps into lowercase
-        # It would be nicer to do this programatically but I don't wanna lose precious milliseconds :,)
+        # It would be nicer to do this programatically but I don't wanna lose precious milliseconds
         alphanumeric = {
             '1': '1', '2': '2', '3': '3', '4': '4', '5': '5',
             '6': '6', '7': '7', '8': '8', '9': '9', '0': '0',

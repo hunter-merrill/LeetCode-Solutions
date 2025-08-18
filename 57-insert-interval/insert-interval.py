@@ -1,3 +1,17 @@
+## WHAT I LEARNED ##
+#
+# I way over-engineered this one because I tunnel-visioned toward making a 
+# solution using binary search, thinking it'd be the fastest. However!
+# Because I have to comb the list at the end anyway (when I combine it all),
+# it ends up being O(n) anyway, so I may as well have used linear search for
+# a much cleaner, readable solution. (instead of this nsaty beast)
+#
+# The golden question: How could I have known that up-front?
+# The exercise asks us to *merge* overlapping intervals. Merging lists requires
+# TRAVERSING the lists, which is O(n) time anyway. Buh.
+
+
+
 # Binary search intervals for the correct place to insert newInterval's head
 # Label this l
 # (Correct place is where left interval ends before & right interval starts after,
@@ -44,12 +58,9 @@ class Solution:
 
         leftInterval = binaryIntervalSearch(intervals, newInterval[0])
         rightInterval = binaryIntervalSearch(intervals, newInterval[1])
-        print(leftInterval)
-        print(rightInterval)
 
         # For the interval at each returned index, check whether newInterval's 
         # respective bound is to the left, contained, or to the right
-
         collapsed = []
         if newInterval[0] < intervals[leftInterval][0]:
             collapsed.append([newInterval[0], -1])
@@ -58,7 +69,7 @@ class Solution:
             collapsed.append([newInterval[0], -1])
         else:
             collapsed.append(intervals[leftInterval])
-        print(collapsed)
+
         if newInterval[1] < intervals[rightInterval][0]:
             collapsed[len(collapsed) - 1][1] = newInterval[1]
             collapsed.append(intervals[rightInterval])
@@ -67,7 +78,5 @@ class Solution:
         else:
             collapsed[len(collapsed) - 1][1] = intervals[rightInterval][1]
 
-        print(collapsed)
         intervals = intervals[:leftInterval] + collapsed + intervals[(rightInterval + 1):]
-        print(intervals)
         return intervals

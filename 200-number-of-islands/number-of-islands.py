@@ -2,14 +2,11 @@
 # Check neighbors to see if part of existing island
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        m = len(grid)
-        n = len(grid[0])
-        #checked = [[-1] * n] * m # m x n grid
         numAdded, numMerged = 0, 0 # Islands added and removed during the process; used to calculate numIslands
-        islands = {}
+        islands = {} # Keeps track of islands & their tiles
 
-        for row in range(m):
-            for col in range(n):
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
                 upper, left, lower, right = '0', '0', '0', '0'
                 currTile = grid[row][col]
 
@@ -22,8 +19,6 @@ class Solution:
                     upper = grid[row - 1][col]
                     if upper is not '0':
                         grid[row][col] = upper
-                        if (row, col) == (9, 0):
-                            print(grid)
                         islands[upper].add((row, col))
                 
                 # Check left tile
@@ -54,18 +49,14 @@ class Solution:
                         islands[mergedInto].add((tile[0], tile[1]))
                     del islands[toMerge]
                     numMerged += 1
-                    print((row, col), upper, left, numAdded-numMerged)
 
                 # New island
                 if upper is '0' and left is '0':
                     numAdded += 1
-                    print(row, col, numAdded-numMerged)
 
                     # Keeps track of which tiles are in which island
                     islands[numAdded] = {(row, col)}
                     grid[row][col] = numAdded
-                        
-        print(grid)
 
         return numAdded - numMerged
 

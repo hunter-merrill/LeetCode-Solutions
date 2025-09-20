@@ -18,9 +18,6 @@ class Solution:
             if not node:
                 return 0
 
-            maxDepthLeft = dfs(node.left)
-            maxDepthRight = dfs(node.right)
-
-            return 1 + max(maxDepthLeft, maxDepthRight)
+            return 1 + max(dfs(node.left), dfs(node.right))
         
         return dfs(root)

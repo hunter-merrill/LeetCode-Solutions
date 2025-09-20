@@ -23,7 +23,9 @@ class Solution:
             node = node.next
 
         node = head
-        for i in range(math.ceil(length / 2)):
+        for i in range(length // 2):
             node = node.next
-        
+        if (length % 2 == 1):
+            node = node.next
+
         return node

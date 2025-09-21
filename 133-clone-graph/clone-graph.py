@@ -19,7 +19,6 @@ class Solution:
             return None
 
         visited = set([node])
-        adjOld = {} # Adjacency lists for old graph
         oldToNew= {} # Dict of old nodes: respective new node
         dq = deque([node])
 
@@ -29,10 +28,8 @@ class Solution:
             nodeOld = dq.popleft()
             nodeNew = Node(nodeOld.val, [])
             oldToNew[nodeOld] = nodeNew
-
-            #adjOld[nodeOld] = []
+            
             for nb in nodeOld.neighbors:
-                #adjOld[nodeOld].append(nb)
                 if nb not in visited:
                     dq.append(nb)
                     visited.add(nb)

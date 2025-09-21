@@ -18,25 +18,18 @@ class Solution:
         if not node:
             return None
 
-        visited = set([node])
-        oldToNew= {} # Dict of old nodes: respective new node
+        visited = {node: Node(node.val)}
         dq = deque([node])
 
         # Create new nodes and link them to their original counterparts
         while dq:
             
             nodeOld = dq.popleft()
-            nodeNew = Node(nodeOld.val, [])
-            oldToNew[nodeOld] = nodeNew
             
             for nb in nodeOld.neighbors:
                 if nb not in visited:
+                    visited[nb] = Node(nb.val) # Mark visited, linking old neighbor to new
                     dq.append(nb)
-                    visited.add(nb)
+                visited[nodeOld].neighbors.append(visited[nb]) # Connect new node to new neighor
 
-        # For every old node, add its neighbors' new node equivalents to its own new node equivalent
-        for oldNode in oldToNew.keys():
-            for nb in oldNode.neighbors:
-                oldToNew[oldNode].neighbors.append(oldToNew[nb])
-
-        return oldToNew[node] # Return new version of node 1
+        return visited[node] # Return new version of node 1

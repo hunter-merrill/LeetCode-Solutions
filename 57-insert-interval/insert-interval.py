@@ -1,82 +1,29 @@
-## WHAT I LEARNED ##
-#
-# I way over-engineered this one because I tunnel-visioned toward making a 
-# solution using binary search, thinking it'd be the fastest. However!
-# Because I have to comb the list at the end anyway (when I combine it all),
-# it ends up being O(n) anyway, so I may as well have used linear search for
-# a much cleaner, readable solution. (instead of this nsaty beast)
-#
-# The golden question: How could I have known that up-front?
-# The exercise asks us to *merge* overlapping intervals. Merging lists requires
-# TRAVERSING the lists, which is O(n) time anyway. Buh.
-
-
-
-# Binary search intervals for the correct place to insert newInterval's head
-# Label this l
-# (Correct place is where left interval ends before & right interval starts after,
-# or where either bound matches newInterval's left bound)
-# Search the space to the right of that point for the correct place for newInterval's right bound
-# If the right bound of the left neighboring interval equals or exceeds newIntervals' own, replace it with newInterval's right bound
-# Vice versa w the left bound at the right neighbor
-# If overlap w two intervals at once, update left one's right bound to equal right one's left bound - 1
+# Binary search over first element of list
+# Once insert position found, check interval end at i-1 to see if it overlaps
+# If so, collapse leftward by larger end index
+# Check interval start at i+1 to see if it overlaps
+# If so, collapse leftward by larger end index UNTIL intervals[i+1][0] > intervals[i][1]
+# [1,2] [3,5] [7,9]
+# [0,10]
 
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
         
-        if len(intervals) == 0:
+        if not intervals:
             return [newInterval]
 
-        # Left and right feelers
-        # Start in middle
-        # Return ind of target
-        def binaryIntervalSearch(arr, targetVal):
-            l, r = 0, len(arr) - 1
-            mid = int((l + r) / 2)
+        intervals.append(newInterval)
+        intervals.sort()
 
-            while l < r:
-                # Get element at center of unchecked range
-                # Select bound specified by parameters
-                curr = arr[mid]
-                
-                # If left bound too big, contract range from the right
-                if curr[0] > targetVal:
-                    r = mid - 1
-                # If left bound too small, check right bound
-                elif curr[0] < targetVal:
-                    # If right bound too small, contract range from the left
-                    if curr[1] < targetVal:
-                        l = mid + 1
-                    # If not, then target is contained by this interval
-                    else: r = l = mid
-                # Left bound == target
-                else: r = l = mid
-                
-                mid = int((l + r) / 2)
+        collapsedIntervals = [intervals[0]]
+        prev = collapsedIntervals[0]
+        for i in range(1, len(intervals)):
             
-            return mid
+            curr = intervals[i]
+            if curr[0] <= prev[1]: # Start is WITHIN previous interval
+                prev[1] = max(curr[1], prev[1]) # Collapse and pick the bigger of the ends
+            else:
+                collapsedIntervals.append(curr)
+                prev = curr
 
-        leftInterval = binaryIntervalSearch(intervals, newInterval[0])
-        rightInterval = binaryIntervalSearch(intervals, newInterval[1])
-
-        # For the interval at each returned index, check whether newInterval's 
-        # respective bound is to the left, contained, or to the right
-        collapsed = []
-        if newInterval[0] < intervals[leftInterval][0]:
-            collapsed.append([newInterval[0], -1])
-        elif newInterval[0] > intervals[leftInterval][1]:
-            collapsed.append(intervals[leftInterval])
-            collapsed.append([newInterval[0], -1])
-        else:
-            collapsed.append(intervals[leftInterval])
-
-        if newInterval[1] < intervals[rightInterval][0]:
-            collapsed[len(collapsed) - 1][1] = newInterval[1]
-            collapsed.append(intervals[rightInterval])
-        elif newInterval[1] > intervals[rightInterval][1]:
-            collapsed[len(collapsed) - 1][1] = newInterval[1]
-        else:
-            collapsed[len(collapsed) - 1][1] = intervals[rightInterval][1]
-
-        intervals = intervals[:leftInterval] + collapsed + intervals[(rightInterval + 1):]
-        return intervals
+        return collapsedIntervals

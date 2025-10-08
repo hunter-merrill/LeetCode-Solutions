@@ -1,10 +1,4 @@
-# Naive: calculate the sum of all possible subarrays
-# O(n^2)
-# 
-# DP problem, remember the sums bc they contribute to each other --> overlapping subproblems
-# idea: lookup table using start & end idx
-# 
-
+# Kadane
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         

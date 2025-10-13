@@ -24,6 +24,7 @@ class Solution:
                 if nums[l] + nums[r] == target:
                     triplets.append([num, nums[l], nums[r]])
 
+                    # Avoid duplicates
                     while l < r and nums[l] == nums[l + 1]:
                         l += 1
                     while l < r and nums[r] == nums[r - 1]:
